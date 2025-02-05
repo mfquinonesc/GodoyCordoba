@@ -15,7 +15,7 @@ CREATE TABLE [usuario](
     puntaje INT NULL
 );
 
-INSERT INTO [usuario] (nombre,apellido,cedula,correo,contrasena) VALUES ('Jhon','Doe',123456789,'jhondode@mail.com','contrasena');
+--INSERT INTO [usuario] (nombre,apellido,cedula,correo,contrasena) VALUES ('Jhon','Doe',123456789,'jhondode@mail.com','contrasena');
 
 SELECT * FROM [usuario]
 

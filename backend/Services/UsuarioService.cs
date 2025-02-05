@@ -22,6 +22,34 @@ namespace backend
 
                 if (status)
                 {
+                    usuario.Puntaje = 0;
+
+                    int length = usuario.Nombre.Length;
+
+                    if (length > 10)
+                    {
+                        usuario.Puntaje = 20;
+                    }
+                    else if (length >= 5 && length <= 10)
+                    {
+                        usuario.Puntaje = 10;
+                    }
+
+                    string dominio = usuario.Correo.Split('@')[1];
+
+                    if (dominio == "gmail.com")
+                    {
+                        usuario.Puntaje += 40;
+                    }
+                    else if (dominio == "hotmail.com")
+                    {
+                        usuario.Puntaje += 20;
+                    }
+                    else 
+                    { 
+                        usuario.Puntaje += 10;
+                    }
+
                     usuario.Contrasena = this.HashPassword(usuario.Contrasena);
                     usuario.UltimoAcceso = DateTime.Now;
                     this._context.Add(usuario);
@@ -34,7 +62,7 @@ namespace backend
                 }
             }
 
-            return new { status, message };
+            return new { status, message, token = "token" };
         }
 
         public dynamic Update(Usuario usuario, int id)
@@ -114,7 +142,7 @@ namespace backend
                }
             }   
 
-            return new { status, message };
+            return new { status, message, token="token" };
         }
 
         private string HashPassword(string password)
