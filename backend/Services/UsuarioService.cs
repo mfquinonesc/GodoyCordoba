@@ -59,7 +59,7 @@ namespace backend
         public dynamic Delete(int id)
         {
             string message = $"No se encontró usuario con id {id}";
-            var user = this._context.Usuarios.Where(u => u.UsuarioId == id);
+            var user = this._context.Usuarios.Where(u => u.UsuarioId == id).FirstOrDefault();
 
             bool status = user != null;
             if (status)

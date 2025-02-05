@@ -1,0 +1,74 @@
+<form class="box" [formGroup]="registForm" (ngSubmit)="submit()">
+
+    <div class="field">
+        <label class="label">Nombre</label>
+        <div class="control">
+            <input formControlName="nombre" class="input" type="text" placeholder="Nombre">
+        </div>
+        <small class="help is-link" *ngIf="nombre.invalid && (nombre.touched || nombre.dirty)">
+            Nombre inválido
+        </small>
+    </div>
+    
+    <div class="field">
+        <label class="label">Apellido</label>
+        <div class="control">
+            <input formControlName="apellido" class="input" type="text" placeholder="Apellido">
+        </div>
+        <small class="help is-link" *ngIf="apellido.invalid && (apellido.touched || apellido.dirty)">
+            Apellido inválido
+        </small>
+    </div>
+    
+    <div class="field">
+        <label class="label">Cédula</label>
+        <div class="control">
+            <input formControlName="cedula" class="input" type="number" placeholder="Cédula">
+        </div>
+        <small class="help is-link" *ngIf="cedula.invalid && (cedula.touched || cedula.dirty)">
+            Cédula inválida
+        </small>
+    </div>
+    
+    <div class="field">
+        <label class="label">Correo</label>
+        <div class="control">
+            <input formControlName="correo" class="input" type="email" placeholder="Correo" [readonly]="!isCreating">
+        </div>
+        <small class="help is-link" *ngIf="correo.invalid && (correo.touched || correo.dirty)">
+            Correo inválido
+        </small>
+    </div>
+    
+    <div *ngIf="isCreating" class="field">
+        <label class="label">Contraseña</label>
+        <div class="control">
+            <input formControlName="contrasena" class="input" type="password" placeholder="Contraseña">
+        </div>
+        <small class="help is-link" *ngIf="contrasena.invalid && (contrasena.touched || contrasena.dirty)">
+            La contraseña debe tener al menos 8 caracteres
+        </small>
+    </div>
+    
+    <div *ngIf="isCreating" class="field">
+        <label class="label">Confirmar Contraseña</label>
+        <div class="control">
+            <input formControlName="confirm" class="input" type="password" placeholder="Confirmar Contraseña">
+        </div>
+        <small class="help is-link" *ngIf="(confirm.value != contrasena.value) && (confirm.touched || confirm.dirty)">
+            Las contraseñas no coinciden
+        </small>
+    </div>    
+
+    <div class="field is-grouped">
+        <div class="control">
+            <button [ngClass]="'button is-link '+(isLoading?'isloading':'')" [disabled]="isLoading || isCreating? !isValidToCreate: !isValidToUpdate" type="submit">Guardar</button>
+        </div>
+        <div class="control">
+            <button [ngClass]="'button is-link is-light '+(isLoading?'isloading':'')" (click)="reset()">Cancelar</button>
+        </div>
+    </div>
+
+</form>
+
+<app-toast [isActive]="isActive" [message]="message" [title]="title" (onAccept)="reset()"></app-toast>

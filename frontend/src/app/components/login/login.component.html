@@ -1,0 +1,35 @@
+<form class="box" [formGroup]="loginForm" (ngSubmit)="submit()">
+
+  <div class="field">
+    <label class="label">Correo</label>
+    <div class="control">
+      <input formControlName="correo" class="input" type="email" placeholder="Correo">
+    </div>
+    <small class="help is-link" *ngIf="correo.invalid && (correo.touched || correo.dirty)">
+      Correo inválido
+    </small>
+  </div>
+
+  <div class="field">
+    <label class="label">Contraseña</label>
+    <div class="control">
+      <input formControlName="contrasena" class="input" type="password" placeholder="Contraseña">
+    </div>
+    <small class="help is-link" *ngIf="contrasena.invalid && (contrasena.touched || contrasena.dirty)">
+      Contraseña inválida
+    </small>
+  </div>
+
+  <div class="field is-grouped">
+    <div class="control">
+      <button [ngClass]="'button is-link '+(isLoading?'isloading':'')" [disabled]="isLoading"
+        type="submit">Ingresar</button>
+    </div>
+    <div class="control">
+      <button [ngClass]="'button is-link is-light '+(isLoading?'isloading':'')" [disabled]="isLoading">Cancelar</button>
+    </div>
+  </div>
+
+</form>
+
+<app-toast [isActive]="isActive" [message]="message" [title]="title" (onAccept)="reset()"></app-toast>

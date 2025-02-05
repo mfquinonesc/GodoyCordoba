@@ -1,0 +1,65 @@
+<section class="hero is-white is-fullheight-with-navbar">
+    <div class="hero-body is-flex is-flex-direction-column is-justify-content-start">
+        <div class="container" style="height: 100%;">
+           <div class="columns">
+            <div class="column is-3" style="border: 1px solid red;">
+              <aside class="menu">
+            
+                <ul class="menu-list">
+                  <li><a class="is-active" (click)="create()">Crear nuevo</a></li>                 
+                </ul>
+                
+              </aside>
+            </div>
+            <div class="column is-9" style="border: 1px solid red;">
+                <article class="panel is-link">
+                    <p class="panel-heading">Lista de usuarios</p>
+               
+                    <div class="panel-block">
+                      <p class="control has-icons-left">
+                        <input class="input is-link" type="text" placeholder="Search" />
+                        <span class="icon is-left">
+                          <i class="fas fa-search" aria-hidden="true"></i>
+                        </span>
+                      </p>
+                    </div>
+
+                    <div *ngFor="let user of usuarios" class="panel-block is-flex is-flex-direction-row is-justify-content-space-between is-align-items-center" >
+                        <a class="is-flex is-flex-direction-row is-justify-content-start is-align-items-center" (click)="read(user.usuarioId!)">
+                            <span class="panel-icon">
+                                <i class="fa-solid fa-user"></i>
+                            </span>
+                            {{user.nombre}} {{user.apellido}}
+                        </a>
+                        <a class="panel-icon" (click)="delete(user.usuarioId!)">                           
+                            <i class="fa-solid fa-trash"></i>                            
+                        </a>                       
+                    </div>
+                   
+                  </article>
+            </div>
+           </div>
+        </div>
+    </div>
+</section>
+
+<section [ngClass]="'modal '+(isEditing?'is-active':'')">
+    <div class="modal-background"></div>
+    <div class="modal-content">
+     
+      <app-regist *ngIf="isEditing" [usuario]="usuario" [isCreating]="false" (onClose)="close()" (onUpdate)="initialize()"></app-regist>
+     
+    </div>
+    <button class="modal-close is-large" aria-label="close" (click)="close()"></button>
+</section> 
+
+
+<section [ngClass]="'modal '+(isCreating?'is-active':'')">
+  <div class="modal-background"></div>
+  <div class="modal-content">
+   
+    <app-regist (onClose)="close()" (onCreate)="initialize()"></app-regist>
+   
+  </div>
+  <button class="modal-close is-large" aria-label="close" (click)="close()"></button>
+</section> 
