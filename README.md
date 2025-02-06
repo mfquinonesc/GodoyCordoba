@@ -19,3 +19,7 @@ Prueba Técnica
 
 ![4](./img/4.png)
 
+![5](./img/5.png)
+
+![6](./img/6.png)
+

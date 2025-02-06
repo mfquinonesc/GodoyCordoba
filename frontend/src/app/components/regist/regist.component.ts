@@ -6,6 +6,7 @@ import { Usuario } from 'src/app/models/usuario';
 import { LoginService } from 'src/app/services/login.service';
 import { UserService } from 'src/app/services/user.service';
 
+
 @Component({
   selector: 'app-regist',
   templateUrl: './regist.component.html',
@@ -19,8 +20,11 @@ export class RegistComponent extends Toaster implements OnInit{
     cedula:[0,[Validators.required, Validators.minLength(6)]],
     correo: ['', [Validators.email, Validators.required]],
     contrasena: ['', [Validators.minLength(8), Validators.required]],
-    confirm: ['',[Validators.minLength(8), Validators.required]]
+    confirm: ['',[Validators.minLength(8), Validators.required]],   
   });
+
+  ultimoAcceso: string = '';
+  categoria: string = '';
 
   @Input() isCreating:boolean = true;
  
@@ -41,8 +45,11 @@ export class RegistComponent extends Toaster implements OnInit{
         nombre: this.usuario.nombre,
         apellido: this.usuario.apellido,
         correo: this.usuario.correo,
-        cedula: this.usuario.cedula
+        cedula: this.usuario.cedula,       
       });
+
+      this.ultimoAcceso = this.usuario.ultimoAcceso?.toLocaleString()!,
+      this.categoria = this.getUserCategory(this.usuario.ultimoAcceso!)
     }
   }
  
@@ -93,6 +100,10 @@ export class RegistComponent extends Toaster implements OnInit{
       this.loginService.signUp(user).subscribe({
         next:(value)=>{    
           if(value.status){
+            const user = value.user as Usuario;
+            const token = value.token as string;
+            this.loginService.setSession(user);
+            this.loginService.setToken(token);      
             this.onCreate.emit(true);
             this.router.navigateByUrl('/home'); 
           }else{
@@ -128,5 +139,20 @@ export class RegistComponent extends Toaster implements OnInit{
     this.isLoading = false;    
     this.onClose.emit(true);    
   }
-
+ 
+  getUserCategory(lastAccess:Date) {
+    const now = new Date();
+    const lastAccessDate = new Date(lastAccess);
+    const diffHours = Math.abs(now.getHours() - lastAccessDate.getHours());
+  
+    if (diffHours <= 12) {
+      return "Hechicero"; 
+    } else if (diffHours > 12 && diffHours <= 48) {
+      return "Luchador"; 
+    } else if (diffHours > 48 && diffHours <= 168) {
+      return "Explorador"; 
+    } else {
+      return "Olvidado"; 
+    }
+  }
 }

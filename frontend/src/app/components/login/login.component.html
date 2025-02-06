@@ -22,7 +22,7 @@
 
   <div class="field is-grouped">
     <div class="control">
-      <button [ngClass]="'button is-link '+(isLoading?'isloading':'')" [disabled]="isLoading"
+      <button [ngClass]="'button is-link '+(isLoading?'isloading':'')" [disabled]="isLoading|| loginForm.invalid"
         type="submit">Ingresar</button>
     </div>
     <div class="control">

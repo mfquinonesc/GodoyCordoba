@@ -13,14 +13,8 @@ export class HeaderComponent {
 
   constructor(private loginServise: LoginService, private router:Router) {}
 
-  get isLoggedIn():boolean{
-    let resp = false;
-    this.loginServise.getIsLoggedIn().subscribe({
-      next:(value)=>{
-        resp = value;
-      },
-    });
-    return resp;
+  get isLoggedIn():boolean{  
+   return this.loginServise.getSession() != null && this.loginServise.getToken() != null;
   }
 
   regist() {
@@ -34,7 +28,7 @@ export class HeaderComponent {
   } 
 
   logOut(){
-    this.loginServise.setIsLoggedIn(false);
+    this.loginServise.clear();
     this.router.navigateByUrl('');
   }
 

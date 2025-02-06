@@ -28,7 +28,9 @@
               "src/styles.css",
               "node_modules/bulma/css/bulma.min.css"
             ],
-            "scripts": []
+            "scripts": [
+              "src/js/bulma.js"
+            ]
           },
           "configurations": {
             "production": {
@@ -97,7 +99,9 @@
               "src/styles.css",
               "node_modules/bulma/css/bulma.min.css"
             ],
-            "scripts": []
+            "scripts": [
+              "src/js/bulma.js"
+            ]
           }
         }
       }

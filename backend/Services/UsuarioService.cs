@@ -62,7 +62,9 @@ namespace backend
                 }
             }
 
-            return new { status, message, token = "token" };
+            usuario.Contrasena = "";
+
+            return new { status, message, token = "token", user = usuario  };
         }
 
         public dynamic Update(Usuario usuario, int id)
@@ -130,19 +132,21 @@ namespace backend
             
             if(user !=  null)
             {
-               status = this.HashPassword(dto.Contrasena) == user.Contrasena;
-
-               if(status){
+                status = this.HashPassword(dto.Contrasena) == user.Contrasena;
+                
+                if (status){
                     user.UltimoAcceso = DateTime.Now;
                     this._context.Usuarios.Update(user);
                     this._context.SaveChanges(); 
                     message = "token";                   
-               }else{
+                }else{
                     message = "Contraseña incorrecta";
-               }
+                }
+
+                user.Contrasena = "";
             }   
 
-            return new { status, message, token="token" };
+            return new { status, message, token="token", user };
         }
 
         private string HashPassword(string password)

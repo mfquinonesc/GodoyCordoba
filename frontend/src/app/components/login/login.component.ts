@@ -3,6 +3,7 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Login } from 'src/app/models/login';
 import { Toaster } from 'src/app/models/toaster';
+import { Usuario } from 'src/app/models/usuario';
 import { LoginService } from 'src/app/services/login.service';
 
 @Component({
@@ -21,16 +22,6 @@ export class LoginComponent extends Toaster{
     super();
   }
 
-  getMode(): boolean {
-    let mode = false;
-    this.loginService.getMode().subscribe({
-      next: (value) => {
-        mode = value;
-      },
-    });
-    return mode;
-  }
-
   get correo() {
     return this.loginForm.controls.correo;
   }
@@ -44,9 +35,12 @@ export class LoginComponent extends Toaster{
       this.isLoading = true;
       const login = this.loginForm.value as Login;
       this.loginService.signIn(login).subscribe({
-        next:(value)=>{     
-          this.loginService.setIsLoggedIn(value.status);     
-          if(value.status){            
+        next:(value)=>{  
+          if(value.status){ 
+            const user = value.user as Usuario;
+            const token = value.token as string;
+            this.loginService.setSession(user);
+            this.loginService.setToken(token);         
             this.router.navigateByUrl('/home');
           }else{
             this.dialog(value.message);

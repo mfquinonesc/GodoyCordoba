@@ -4,6 +4,7 @@ import { environment } from 'src/environments/environment';
 import { Login } from '../models/login';
 import { HttpClient } from '@angular/common/http';
 import { Usuario } from '../models/usuario';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -13,10 +14,8 @@ export class LoginService {
   private path: string = `${environment.API_PATH}/usuario`;
 
   private mode = new BehaviorSubject<boolean>(false);
-
-  private isLoggeIn = new BehaviorSubject<boolean>(false);
   
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private router:Router) {}
 
   login() {
     this.mode.next(false);
@@ -34,17 +33,28 @@ export class LoginService {
     return this.http.post(`${this.path}/login`, login);
   }
 
-  signUp(user: Usuario): Observable<any> {
-    console.log(user);
-    
-    return this.http.post(this.path, user);
+  signUp(user: Usuario): Observable<any> {    
+     return this.http.post(this.path, user);
   }
 
-  setIsLoggedIn(value:boolean){   
-    this.isLoggeIn.next(value);
+  setToken(token:string){
+    localStorage.setItem('token',token);
   }
 
-  getIsLoggedIn():Observable<boolean>{
-    return this.isLoggeIn.asObservable();
+  getToken(){
+    return localStorage.getItem('token');
   }
+
+  setSession(usuario:Usuario){
+    localStorage.setItem('session',JSON.stringify(usuario));
+  }
+
+  getSession():Usuario| null{
+    const user = localStorage.getItem('session');
+    return user? user as unknown as Usuario: null;
+  }
+
+  clear(){
+    localStorage.clear();
+  } 
 }
